@@ -181,7 +181,7 @@ LEFT JOIN (
         MAX(CASE WHEN de.name = 'Did you inherit your husband''s: Business' THEN dv.value END) as inherited_business,
         MAX(CASE WHEN de.name = 'Did you inherit your husband''s: Bank account/financial assets' THEN dv.value END) as inherited_financial,
         MAX(CASE WHEN de.name = 'Who inherited your husband''s agricultural land? من ورث أرض زوجك الزراعية؟' THEN dv.value END) as who_inherited_land,
-        MAX(CASE WHEN de.name = 'Have you been subject to cultural practices as a result of widowhood?' THEN dv.value END) as cultural_practices,
+        MAX(CASE WHEN de.id = 'uPPP9PFgYE2' THEN dv.value END) as cultural_practices,
         MAX(CASE WHEN de.name = 'Income: What is your net income per month (local currency)?' THEN dv.value END) as baseline_income,
         MAX(CASE WHEN de.name = 'Are you currently engaged in any income-generation activities?' THEN dv.value END) as baseline_income_activities,
         MAX(CASE WHEN de.name = 'Do you have an account with a commercial bank or at the post office? عندك حساب في بنك أو في البريد/البوسطة؟' THEN dv.value END) as baseline_bank_account,
