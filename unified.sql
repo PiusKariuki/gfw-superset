@@ -133,7 +133,7 @@ SELECT
     edv.expense_medicine_adults,
     edv.expense_medicine_children,
     
-    -- Changes After Widowhood
+    -- Changes After Widowhood (Impact of Widowhood Analysis - All 9 Categories)
     edv.change_community_behavior,
     edv.change_dress,
     edv.change_eating_habits,
