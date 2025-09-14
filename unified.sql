@@ -67,6 +67,7 @@ SELECT
     -- Survey Data from Data Elements
     edv.age_widowed,
     edv.age_married,
+    edv.reason_for_widowhood,
     edv.dependents,
     edv.children_under_5,
     edv.children_5_to_18,
@@ -166,6 +167,7 @@ LEFT JOIN (
         e.enrollment,
         MAX(CASE WHEN de.name = 'BL-Age in which you became a widow?' OR de.id = 'age_widow_id' THEN dv.value END) as age_widowed,
         MAX(CASE WHEN de.name = 'BL-Age in which you were married?' OR de.id = 'age_married_id' THEN dv.value END) as age_married,
+        MAX(CASE WHEN de.name = 'Reason for widowhood' THEN dv.value END) as reason_for_widowhood,
         MAX(CASE WHEN de.name = 'How many dependents of school age children do you have? كم عدد المعالين من الأطفال في سن المدرسة لديك؟' THEN dv.value END) as dependents,
         MAX(CASE WHEN de.name = 'Children under 5' THEN dv.value END) as children_under_5,
         MAX(CASE WHEN de.name = 'Children 5 to 18' THEN dv.value END) as children_5_to_18,
