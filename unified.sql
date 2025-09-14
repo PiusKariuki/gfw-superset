@@ -138,59 +138,7 @@ SELECT
     edv.change_dress,
     edv.change_eating_habits,
     edv.change_freedom_movement,
-    edv.change_increase_violence,
-    
-    -- Derived Age Groups
-    (CASE 
-        WHEN ea.current_age ~ '^[0-9]+$' AND CAST(ea.current_age AS INTEGER) < 18 THEN 'Under 18'
-        WHEN ea.current_age ~ '^[0-9]+$' AND CAST(ea.current_age AS INTEGER) BETWEEN 18 AND 34 THEN '18-34'
-        WHEN ea.current_age ~ '^[0-9]+$' AND CAST(ea.current_age AS INTEGER) BETWEEN 35 AND 54 THEN '35-54'
-        WHEN ea.current_age ~ '^[0-9]+$' AND CAST(ea.current_age AS INTEGER) BETWEEN 55 AND 65 THEN '55-65'
-        WHEN ea.current_age ~ '^[0-9]+$' AND CAST(ea.current_age AS INTEGER) > 65 THEN '65+'
-        ELSE 'Unknown'
-    END) as current_age_group,
-    
-    (CASE 
-        WHEN edv.age_married ~ '^[0-9]+$' AND CAST(edv.age_married AS INTEGER) < 18 THEN 'Under 18'
-        WHEN edv.age_married ~ '^[0-9]+$' AND CAST(edv.age_married AS INTEGER) BETWEEN 18 AND 34 THEN '18-34'
-        WHEN edv.age_married ~ '^[0-9]+$' AND CAST(edv.age_married AS INTEGER) BETWEEN 35 AND 54 THEN '35-54'
-        WHEN edv.age_married ~ '^[0-9]+$' AND CAST(edv.age_married AS INTEGER) BETWEEN 55 AND 65 THEN '55-65'
-        WHEN edv.age_married ~ '^[0-9]+$' AND CAST(edv.age_married AS INTEGER) > 65 THEN '65+'
-        ELSE 'Unknown'
-    END) as age_married_group,
-    
-    (CASE 
-        WHEN edv.age_widowed ~ '^[0-9]+$' AND CAST(edv.age_widowed AS INTEGER) < 18 THEN 'Under 18'
-        WHEN edv.age_widowed ~ '^[0-9]+$' AND CAST(edv.age_widowed AS INTEGER) BETWEEN 18 AND 34 THEN '18-34'
-        WHEN edv.age_widowed ~ '^[0-9]+$' AND CAST(edv.age_widowed AS INTEGER) BETWEEN 35 AND 54 THEN '35-54'
-        WHEN edv.age_widowed ~ '^[0-9]+$' AND CAST(edv.age_widowed AS INTEGER) BETWEEN 55 AND 64 THEN '55-64'
-        WHEN edv.age_widowed ~ '^[0-9]+$' AND CAST(edv.age_widowed AS INTEGER) >= 65 THEN '65+'
-        ELSE 'Unknown'
-    END) as age_widowed_group,
-    
-    -- Inheritance Summary
-    (CASE 
-        WHEN edv.inherited_home = 'Yes' OR edv.inherited_land = 'Yes' OR edv.inherited_business = 'Yes' OR edv.inherited_financial = 'Yes' THEN 'Yes'
-        WHEN edv.inherited_home = 'No' AND edv.inherited_land = 'No' AND edv.inherited_business = 'No' AND edv.inherited_financial = 'No' THEN 'No'
-        ELSE 'Unknown'
-    END) as inherited_anything,
-    
-    -- Bank Account Status Change
-    (CASE 
-        WHEN edv.baseline_bank_account = 'No' AND edv.post_bank_account = 'Yes' THEN 'Opened Account'
-        WHEN edv.baseline_bank_account = 'Yes' AND edv.post_bank_account = 'Yes' THEN 'Had Account'
-        WHEN edv.baseline_bank_account = 'No' AND edv.post_bank_account = 'No' THEN 'No Account'
-        ELSE 'Unknown'
-    END) as bank_account_status,
-    
-    -- Violence Status Change
-    (CASE 
-        WHEN edv.baseline_violence = 'Yes' AND edv.post_violence = 'No' THEN 'Reduced Violence'
-        WHEN edv.baseline_violence = 'No' AND edv.post_violence = 'No' THEN 'No Violence'
-        WHEN edv.baseline_violence = 'Yes' AND edv.post_violence = 'Yes' THEN 'Continued Violence'
-        WHEN edv.baseline_violence = 'No' AND edv.post_violence = 'Yes' THEN 'New Violence'
-        ELSE 'Unknown'
-    END) as violence_status
+    edv.change_increase_violence
 
 FROM (
     SELECT 
@@ -216,15 +164,15 @@ FROM (
 LEFT JOIN (
     SELECT 
         e.enrollment,
-        MAX(CASE WHEN de.name = 'BL-Age in which you became a widow?' THEN dv.value END) as age_widowed,
-        MAX(CASE WHEN de.name = 'BL-Age in which you were married?' THEN dv.value END) as age_married,
+        MAX(CASE WHEN de.name = 'BL-Age in which you became a widow?' OR de.id = 'age_widow_id' THEN dv.value END) as age_widowed,
+        MAX(CASE WHEN de.name = 'BL-Age in which you were married?' OR de.id = 'age_married_id' THEN dv.value END) as age_married,
         MAX(CASE WHEN de.name = 'How many dependents of school age children do you have? كم عدد المعالين من الأطفال في سن المدرسة لديك؟' THEN dv.value END) as dependents,
         MAX(CASE WHEN de.name = 'Children under 5' THEN dv.value END) as children_under_5,
         MAX(CASE WHEN de.name = 'Children 5 to 18' THEN dv.value END) as children_5_to_18,
         MAX(CASE WHEN de.name = 'Elderly over 65 years' THEN dv.value END) as elderly_over_65,
         MAX(CASE WHEN de.name = 'Other disabled' THEN dv.value END) as other_disabled,
         MAX(CASE WHEN de.name = 'Level of Education' THEN dv.value END) as education_level,
-        MAX(CASE WHEN de.name = 'Literacy' THEN dv.value END) as literacy,
+        MAX(CASE WHEN de.name = 'Are you able to read and/or write?' OR de.id = 'QNtD4slPwWu' THEN dv.value END) as literacy,
         MAX(CASE WHEN de.name = 'Was your marriage registered with your country''s government (did you have a marriage certificate)?' THEN dv.value END) as marriage_registered,
         MAX(CASE WHEN de.name = 'Did you inherit your husband''s: Home' THEN dv.value END) as inherited_home,
         MAX(CASE WHEN de.name = 'Did you inherit your husband''s: Land' THEN dv.value END) as inherited_land,
