@@ -120,9 +120,13 @@ SELECT
     edv.post_intervention_school_attendance,
     edv.post_intervention_can_pay_education,
     edv.post_intervention_school_fees,
+    edv.post_intervention_can_pay_medical,
     edv.post_bank_account,
     edv.post_opened_bank_account,
     edv.post_violence,
+    edv.post_intervention_food_worry,
+    edv.post_intervention_skip_meals,
+    edv.post_intervention_whole_day_no_food,
     edv.changes_experienced,
     edv.purchased_assets,
     edv.what_assets,
@@ -154,6 +158,26 @@ SELECT
     edv.post_intervention_expense_medical_children,
     edv.post_intervention_expense_medicine_adults,
     edv.post_intervention_expense_medicine_children,
+    
+    -- Meat Consumption Frequency
+    edv.baseline_meat_consumption_frequency,
+    edv.post_intervention_meat_consumption_frequency,
+    
+    -- Expense in Food
+    edv.baseline_expense_food,
+    edv.post_intervention_expense_food,
+    
+    -- Medical Expenses
+    edv.baseline_medical_expenses,
+    edv.post_intervention_medical_expenses,
+    
+    -- Ability to Pay for Housing Needs
+    edv.baseline_ability_pay_housing,
+    edv.post_intervention_ability_pay_housing,
+    
+    -- Who Suffered Violence
+    edv.who_suffered_violence_baseline,
+    edv.who_suffered_violence_post,
     
     -- Changes After Widowhood (Impact of Widowhood Analysis - All 9 Categories)
     edv.change_community_behavior,
@@ -213,9 +237,9 @@ LEFT JOIN (
         MAX(CASE WHEN de.id = 'GNj9pNISlZX' AND e.program_stage = 'glKRXmp3I9k' AND dv.value ~ '^[0-9]+$' THEN CAST(dv.value AS INTEGER) END) as baseline_school_attendance,
         MAX(CASE WHEN de.id = 'q72P7dX5la6' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_school_fees,
         MAX(CASE WHEN de.id = 'Xg4WbsWBWvd' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_can_pay_education,
-        MAX(CASE WHEN de.name = ' Not having  enough to eat "كنت أنت أو أي شخص آخر في أسرتك قلقون بشأن عدم توافر الطعام الكافي  بسبب عدم توفر النقود الكافية أو المصادر الأخرى للحصول على الطعام؟"' THEN dv.value END) as baseline_food_worry,
-        MAX(CASE WHEN de.name = '"Skip a meal?" "هل مر وقت اضطررت فيه أنت أو غيرك من أفراد أسرتك أن تتخلوا عن وجبة طعام  بسبب عدم توفر النقود الكافية أو المصادر الأخرى للحصول على الطعام؟"' THEN dv.value END) as baseline_skip_meals,
-        MAX(CASE WHEN de.name = '"Went without eating for a whole day" "هل حدث مرة أن بقيت أنت أو أي شخص آخر في أسرتك دون تناول الطعام ليوم كامل  بسبب عدم توفر النقود الكافية أو المصادر الأخرى للحصول على الطعام؟"' THEN dv.value END) as baseline_whole_day_no_food,
+        MAX(CASE WHEN de.id = 'XUKGIGjlS04' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_food_worry,
+        MAX(CASE WHEN de.id = 'idK1WA0I6lj' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_skip_meals,
+        MAX(CASE WHEN de.id = 'h9RwWr2rgO4' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_whole_day_no_food,
         MAX(CASE WHEN de.name = '"Ate less ?"أيضاً ، بالتفكير حول ال 12 شهراً الماضية، هل حدث وأن أكلت أنت أو أي شخص  آخر في أسرتك أقل مما اعتقدتم أنكم يجب أن تأكلوا بسبب عدم توفر النقود الكافية أو المصادر  الأخرى للحصول على الطعام؟"' THEN dv.value END) as baseline_ate_less,
         MAX(CASE WHEN de.name = 'Are you able to pay for the fees surrounding the medical needs of yourself and your dependents?' THEN dv.value END) as baseline_can_pay_medical,
         MAX(CASE WHEN de.name = 'Can you afford to pay for your and your family''s medical needs?  هل تستطيعين دفع مصروفات الاحتياجات الطبية لك ولمن معك؟' THEN dv.value END) as baseline_afford_medical,
@@ -241,6 +265,7 @@ LEFT JOIN (
         MAX(CASE WHEN de.id = 'Pt0rA8uace9' AND e.program_stage = 'Xd5D2XCaPZH' AND dv.value ~ '^[0-9]+$' THEN CAST(dv.value AS INTEGER) END) as post_intervention_school_attendance,
         MAX(CASE WHEN de.id = 'Xg4WbsWBWvd' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_can_pay_education,
         MAX(CASE WHEN de.id = 'q72P7dX5la6' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_school_fees,
+        MAX(CASE WHEN de.id = 'YUzsDhqu8qk' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_can_pay_medical,
         MAX(CASE WHEN de.name = 'PS - Do you own a bank/mobile banking account?' THEN dv.value END) as post_bank_account,
         MAX(CASE WHEN de.name = 'PS - Have you opened a bank / digital banking account since joining the WISALA?' THEN dv.value END) as post_opened_bank_account,
         MAX(CASE WHEN de.name = 'PS -  Have you experienced violence related to your widowhood in the past 2 months?' THEN dv.value END) as post_violence,
@@ -274,6 +299,32 @@ LEFT JOIN (
         MAX(CASE WHEN de.id = 'GLUdhg9w9Tt' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_expense_medical_children,
         MAX(CASE WHEN de.id = 'vBfZS1txgQp' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_expense_medicine_adults,
         MAX(CASE WHEN de.id = 'qD0ADXxxYJd' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_expense_medicine_children,
+        
+        -- Post Intervention Food Security
+        MAX(CASE WHEN de.id = 'XUKGIGjlS04' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_food_worry,
+        MAX(CASE WHEN de.id = 'idK1WA0I6lj' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_skip_meals,
+        MAX(CASE WHEN de.id = 'h9RwWr2rgO4' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_whole_day_no_food,
+        
+        -- Meat Consumption Frequency
+        MAX(CASE WHEN de.id = 'YF6VOJJsoFZ' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_meat_consumption_frequency,
+        MAX(CASE WHEN de.id = 'DHLgUqTRFOH' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_meat_consumption_frequency,
+        
+        -- Expense in Food
+        MAX(CASE WHEN de.id = 'OikdE5316F5' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_expense_food,
+        MAX(CASE WHEN de.id = 'OikdE5316F5' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_expense_food,
+        
+        -- Medical Expenses
+        MAX(CASE WHEN de.id = 'GhqBTq0eSty' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_medical_expenses,
+        MAX(CASE WHEN de.id = 'GhqBTq0eSty' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_medical_expenses,
+        
+        -- Ability to Pay for Housing Needs
+        MAX(CASE WHEN de.id = 'WX4O5IMxYAH' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_ability_pay_housing,
+        MAX(CASE WHEN de.id = 'WX4O5IMxYAH' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_ability_pay_housing,
+        
+        -- Who Suffered Violence
+        MAX(CASE WHEN de.id = 'kYr7NlM7cwM' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as who_suffered_violence_baseline,
+        MAX(CASE WHEN de.id = 'kYr7NlM7cwM' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as who_suffered_violence_post,
+        
         MAX(CASE WHEN de.name = 'A change in community behavior' THEN dv.value END) as change_community_behavior,
         MAX(CASE WHEN de.name = 'A change in dress' THEN dv.value END) as change_dress,
         MAX(CASE WHEN de.name = 'A change in eating habits' THEN dv.value END) as change_eating_habits,
