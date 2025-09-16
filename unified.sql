@@ -151,6 +151,8 @@ SELECT
     edv.opened_bank_account,
     edv.purchased_vehicle,
     edv.started_business,
+    edv.business_with_wisala_borrowings,
+    edv.recommend_wisala_to_other_widows,
     
     edv.post_income,
     edv.monthly_post_intervention_income,
@@ -338,6 +340,8 @@ LEFT JOIN (
         MAX(CASE WHEN de.id = 'Xlg4mUtcMYQ' THEN dv.value END) as opened_bank_account,
         MAX(CASE WHEN de.id = 'X4oDkFVr3EW' THEN dv.value END) as purchased_vehicle,
         MAX(CASE WHEN de.id = 'Wy8xSvKUt5i' THEN dv.value END) as started_business,
+        MAX(CASE WHEN de.id = 'uIs40SzzXCG' THEN dv.value END) as business_with_wisala_borrowings,
+        MAX(CASE WHEN de.id = 'HP3Bz3ycb3l' THEN dv.value END) as recommend_wisala_to_other_widows,
         
         MAX(CASE WHEN de.name = 'PS- Specify - Income' THEN dv.value END) as post_income,
         MAX(CASE WHEN de.id = 'sAHilA2M5uA' THEN dv.value END) as monthly_post_intervention_income,
