@@ -98,7 +98,6 @@ SELECT
     edv.baseline_ate_less,
     edv.baseline_can_pay_medical,
     edv.baseline_afford_medical,
-    edv.baseline_violence,
     edv.baseline_feel_safe,
     edv.baseline_community_belonging,
     edv.baseline_happiness,
@@ -122,7 +121,6 @@ SELECT
     edv.post_intervention_can_pay_medical,
     edv.post_bank_account,
     edv.post_opened_bank_account,
-    edv.post_violence,
     edv.post_intervention_food_worry,
     edv.post_intervention_skip_meals,
     edv.post_intervention_whole_day_no_food,
@@ -134,7 +132,6 @@ SELECT
     edv.how_learned_wisala,
     edv.reason_joining_other,
     edv.reason_joining_specify,
-    edv.post_reduced_violence_vulnerability,
     
     -- Expense Data - Baseline
     edv.baseline_expense_bread,
@@ -172,9 +169,9 @@ SELECT
     -- Ability to Pay for Housing Needs (only exists in post-intervention)
     edv.post_intervention_ability_pay_housing,
     
-    -- Who Suffered Violence
-    edv.who_suffered_violence_baseline,
-    edv.who_suffered_violence_post,
+    -- Violence Experience
+    edv.baseline_violence_experience,
+    edv.post_intervention_violence_experience,
     
     -- Changes After Widowhood (Impact of Widowhood Analysis - All 9 Categories)
     edv.change_community_behavior,
@@ -240,7 +237,6 @@ LEFT JOIN (
         MAX(CASE WHEN de.name = '"Ate less ?"أيضاً ، بالتفكير حول ال 12 شهراً الماضية، هل حدث وأن أكلت أنت أو أي شخص  آخر في أسرتك أقل مما اعتقدتم أنكم يجب أن تأكلوا بسبب عدم توفر النقود الكافية أو المصادر  الأخرى للحصول على الطعام؟"' THEN dv.value END) as baseline_ate_less,
         MAX(CASE WHEN de.name = 'Are you able to pay for the fees surrounding the medical needs of yourself and your dependents?' THEN dv.value END) as baseline_can_pay_medical,
         MAX(CASE WHEN de.name = 'Can you afford to pay for your and your family''s medical needs?  هل تستطيعين دفع مصروفات الاحتياجات الطبية لك ولمن معك؟' THEN dv.value END) as baseline_afford_medical,
-        MAX(CASE WHEN de.name = 'Did you experience violence related to your widowhood?' THEN dv.value END) as baseline_violence,
         MAX(CASE WHEN de.name = 'Do you feel safe in your home and community? هل تشعر بالأمان في منزلك ومجتمعك؟' THEN dv.value END) as baseline_feel_safe,
         MAX(CASE WHEN de.name = 'Do you feel like you''re a part of your community? هل تشعرين بالانتماء للمجتمع ؟' THEN dv.value END) as baseline_community_belonging,
         MAX(CASE WHEN de.name = 'How happy to you feel?' THEN dv.value END) as baseline_happiness,
@@ -264,7 +260,6 @@ LEFT JOIN (
         MAX(CASE WHEN de.id = 'YUzsDhqu8qk' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_can_pay_medical,
         MAX(CASE WHEN de.name = 'PS - Do you own a bank/mobile banking account?' THEN dv.value END) as post_bank_account,
         MAX(CASE WHEN de.name = 'PS - Have you opened a bank / digital banking account since joining the WISALA?' THEN dv.value END) as post_opened_bank_account,
-        MAX(CASE WHEN de.name = 'PS -  Have you experienced violence related to your widowhood in the past 2 months?' THEN dv.value END) as post_violence,
         MAX(CASE WHEN de.name = 'PS - Have you experienced any changes since you joined the WISALA?' THEN dv.value END) as changes_experienced,
         MAX(CASE WHEN de.name = 'PS - Were you able to purchase assets since joining your WISALA?' THEN dv.value END) as purchased_assets,
         MAX(CASE WHEN de.name = 'What assets have you been able to purchase? (select all that apply)' THEN dv.value END) as what_assets,
@@ -273,7 +268,6 @@ LEFT JOIN (
         MAX(CASE WHEN de.name = 'How did you learn about the WISALA?' THEN dv.value END) as how_learned_wisala,
         MAX(CASE WHEN de.name = 'GFW -Reason for joining WISALA- Other' THEN dv.value END) as reason_joining_other,
         MAX(CASE WHEN de.name = 'GFW -Reason for joining WISALA- Specify' THEN dv.value END) as reason_joining_specify,
-        MAX(CASE WHEN de.name = 'PS -  Do you feel that your current status of income and wealth has reduced your vulnerability to violence?' THEN dv.value END) as post_reduced_violence_vulnerability,
         -- Baseline Expense Data
         MAX(CASE WHEN de.id = 'jGcxY3sxwKQ' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_expense_bread,
         MAX(CASE WHEN de.id = 'JYT6vCeosTj' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_expense_cereals,
@@ -315,9 +309,9 @@ LEFT JOIN (
         -- Ability to Pay for Housing Needs (only exists in post-intervention)
         MAX(CASE WHEN de.id = 'WX4O5IMxYAH' THEN dv.value END) as post_intervention_ability_pay_housing,
         
-        -- Who Suffered Violence
-        MAX(CASE WHEN de.id = 'kYr7NlM7cwM' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as who_suffered_violence_baseline,
-        MAX(CASE WHEN de.id = 'kYr7NlM7cwM' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as who_suffered_violence_post,
+        -- Violence Experience
+        MAX(CASE WHEN de.id = 'JcAcUNwBKWU' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_violence_experience,
+        MAX(CASE WHEN de.id = 'kKUOjTevGLo' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_violence_experience,
         
         MAX(CASE WHEN de.name = 'A change in community behavior' THEN dv.value END) as change_community_behavior,
         MAX(CASE WHEN de.name = 'A change in dress' THEN dv.value END) as change_dress,
