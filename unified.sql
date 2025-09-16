@@ -138,6 +138,20 @@ SELECT
     edv.emotional_deterioration,
     edv.rights_knowledge_increase,
     
+    -- WISALA Money Usage and Asset Purchases (Post-Intervention Only)
+    edv.first_thing_with_wisala_money,
+    edv.second_thing_with_wisala_money,
+    edv.able_to_purchase_assets,
+    edv.purchased_home,
+    edv.purchased_land,
+    edv.purchased_livestock,
+    edv.purchased_valuable_plants,
+    edv.purchased_mobile_phone,
+    edv.purchased_appliances,
+    edv.opened_bank_account,
+    edv.purchased_vehicle,
+    edv.started_business,
+    
     edv.post_income,
     edv.monthly_post_intervention_income,
     edv.post_intervention_savings,
@@ -310,6 +324,20 @@ LEFT JOIN (
         MAX(CASE WHEN de.id = 'sTmpxflNhL7' THEN dv.value END) as emotional_improvement,
         MAX(CASE WHEN de.id = 'GGHxCks5aXZ' THEN dv.value END) as emotional_deterioration,
         MAX(CASE WHEN de.id = 'slsJy0N2G4E' THEN dv.value END) as rights_knowledge_increase,
+        
+        -- WISALA Money Usage and Asset Purchases (Post-Intervention Only)
+        MAX(CASE WHEN de.id = 'u0Q4Mf1WcVf' THEN dv.value END) as first_thing_with_wisala_money,
+        MAX(CASE WHEN de.id = 'un6B2QX85qn' THEN dv.value END) as second_thing_with_wisala_money,
+        MAX(CASE WHEN de.id = 'm960CyoAFH4' THEN dv.value END) as able_to_purchase_assets,
+        MAX(CASE WHEN de.id = 'CE7j9FfdNo7' THEN dv.value END) as purchased_home,
+        MAX(CASE WHEN de.id = 'hsUxqD4DCT8' THEN dv.value END) as purchased_land,
+        MAX(CASE WHEN de.id = 'IVR3A7Ok5cq' THEN dv.value END) as purchased_livestock,
+        MAX(CASE WHEN de.id = 'Hfi1OTaEXEj' THEN dv.value END) as purchased_valuable_plants,
+        MAX(CASE WHEN de.id = 'ANeKcy4Vuum' THEN dv.value END) as purchased_mobile_phone,
+        MAX(CASE WHEN de.id = 'VQsmF98Rj9f' THEN dv.value END) as purchased_appliances,
+        MAX(CASE WHEN de.id = 'Xlg4mUtcMYQ' THEN dv.value END) as opened_bank_account,
+        MAX(CASE WHEN de.id = 'X4oDkFVr3EW' THEN dv.value END) as purchased_vehicle,
+        MAX(CASE WHEN de.id = 'Wy8xSvKUt5i' THEN dv.value END) as started_business,
         
         MAX(CASE WHEN de.name = 'PS- Specify - Income' THEN dv.value END) as post_income,
         MAX(CASE WHEN de.id = 'sAHilA2M5uA' THEN dv.value END) as monthly_post_intervention_income,
