@@ -123,6 +123,21 @@ SELECT
     edv.post_intervention_land_ownership_knowledge,
     edv.baseline_legal_empowerment,
     edv.post_intervention_legal_empowerment,
+    
+    -- Post-Intervention Changes and Impact (Post-Intervention Only)
+    edv.changes_since_joining_wisala,
+    edv.financial_improvement,
+    edv.financial_deterioration,
+    edv.nutrition_improvement,
+    edv.nutrition_deterioration,
+    edv.medical_ability_increase,
+    edv.medical_ability_decrease,
+    edv.education_payment_easier,
+    edv.education_payment_difficult,
+    edv.emotional_improvement,
+    edv.emotional_deterioration,
+    edv.rights_knowledge_increase,
+    
     edv.post_income,
     edv.monthly_post_intervention_income,
     edv.post_intervention_savings,
@@ -281,6 +296,21 @@ LEFT JOIN (
         -- Legal Empowerment (not a number)
         MAX(CASE WHEN de.id = 'By6L7oP3mlK' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_legal_empowerment,
         MAX(CASE WHEN de.id = 'By6L7oP3mlK' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_legal_empowerment,
+        
+        -- Post-Intervention Changes and Impact (Post-Intervention Only)
+        MAX(CASE WHEN de.id = 'IqrKlowanOs' THEN dv.value END) as changes_since_joining_wisala,
+        MAX(CASE WHEN de.id = 'ZAOFNF0XSKb' THEN dv.value END) as financial_improvement,
+        MAX(CASE WHEN de.id = 'RRi0ThhquZh' THEN dv.value END) as financial_deterioration,
+        MAX(CASE WHEN de.id = 'ws9EOYTuJ39' THEN dv.value END) as nutrition_improvement,
+        MAX(CASE WHEN de.id = 'Vec6MW4LbJa' THEN dv.value END) as nutrition_deterioration,
+        MAX(CASE WHEN de.id = 'G8upm0LzCU1' THEN dv.value END) as medical_ability_increase,
+        MAX(CASE WHEN de.id = 'Tk97BfeiY3N' THEN dv.value END) as medical_ability_decrease,
+        MAX(CASE WHEN de.id = 'Z2wznEDrveB' THEN dv.value END) as education_payment_easier,
+        MAX(CASE WHEN de.id = 'FziApQ5Nx4M' THEN dv.value END) as education_payment_difficult,
+        MAX(CASE WHEN de.id = 'sTmpxflNhL7' THEN dv.value END) as emotional_improvement,
+        MAX(CASE WHEN de.id = 'GGHxCks5aXZ' THEN dv.value END) as emotional_deterioration,
+        MAX(CASE WHEN de.id = 'slsJy0N2G4E' THEN dv.value END) as rights_knowledge_increase,
+        
         MAX(CASE WHEN de.name = 'PS- Specify - Income' THEN dv.value END) as post_income,
         MAX(CASE WHEN de.id = 'sAHilA2M5uA' THEN dv.value END) as monthly_post_intervention_income,
         MAX(CASE WHEN de.id = 'tsVNAWBALre' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_savings,
