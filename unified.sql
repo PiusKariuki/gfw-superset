@@ -98,7 +98,6 @@ SELECT
     edv.baseline_ate_less,
     edv.baseline_can_pay_medical,
     edv.baseline_afford_medical,
-    edv.baseline_can_pay_housing,
     edv.baseline_violence,
     edv.baseline_feel_safe,
     edv.baseline_community_belonging,
@@ -163,16 +162,14 @@ SELECT
     edv.baseline_meat_consumption_frequency,
     edv.post_intervention_meat_consumption_frequency,
     
-    -- Expense in Food
+    -- Expense in Food (only exists in baseline)
     edv.baseline_expense_food,
-    edv.post_intervention_expense_food,
     
     -- Medical Expenses
     edv.baseline_medical_expenses,
     edv.post_intervention_medical_expenses,
     
-    -- Ability to Pay for Housing Needs
-    edv.baseline_ability_pay_housing,
+    -- Ability to Pay for Housing Needs (only exists in post-intervention)
     edv.post_intervention_ability_pay_housing,
     
     -- Who Suffered Violence
@@ -243,7 +240,6 @@ LEFT JOIN (
         MAX(CASE WHEN de.name = '"Ate less ?"أيضاً ، بالتفكير حول ال 12 شهراً الماضية، هل حدث وأن أكلت أنت أو أي شخص  آخر في أسرتك أقل مما اعتقدتم أنكم يجب أن تأكلوا بسبب عدم توفر النقود الكافية أو المصادر  الأخرى للحصول على الطعام؟"' THEN dv.value END) as baseline_ate_less,
         MAX(CASE WHEN de.name = 'Are you able to pay for the fees surrounding the medical needs of yourself and your dependents?' THEN dv.value END) as baseline_can_pay_medical,
         MAX(CASE WHEN de.name = 'Can you afford to pay for your and your family''s medical needs?  هل تستطيعين دفع مصروفات الاحتياجات الطبية لك ولمن معك؟' THEN dv.value END) as baseline_afford_medical,
-        MAX(CASE WHEN de.name = 'Are you able to pay for the fees surrounding the housing needs of yourself and your dependents?' THEN dv.value END) as baseline_can_pay_housing,
         MAX(CASE WHEN de.name = 'Did you experience violence related to your widowhood?' THEN dv.value END) as baseline_violence,
         MAX(CASE WHEN de.name = 'Do you feel safe in your home and community? هل تشعر بالأمان في منزلك ومجتمعك؟' THEN dv.value END) as baseline_feel_safe,
         MAX(CASE WHEN de.name = 'Do you feel like you''re a part of your community? هل تشعرين بالانتماء للمجتمع ؟' THEN dv.value END) as baseline_community_belonging,
@@ -309,17 +305,15 @@ LEFT JOIN (
         MAX(CASE WHEN de.id = 'YF6VOJJsoFZ' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_meat_consumption_frequency,
         MAX(CASE WHEN de.id = 'DHLgUqTRFOH' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_meat_consumption_frequency,
         
-        -- Expense in Food
-        MAX(CASE WHEN de.id = 'OikdE5316F5' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_expense_food,
-        MAX(CASE WHEN de.id = 'OikdE5316F5' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_expense_food,
+        -- Expense in Food (only exists in baseline)
+        MAX(CASE WHEN de.id = 'OikdE5316F5' AND dv.value ~ '^[0-9]+\.?[0-9]*$' THEN CAST(dv.value AS NUMERIC) END) as baseline_expense_food,
         
         -- Medical Expenses
         MAX(CASE WHEN de.id = 'GhqBTq0eSty' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_medical_expenses,
         MAX(CASE WHEN de.id = 'GhqBTq0eSty' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_medical_expenses,
         
-        -- Ability to Pay for Housing Needs
-        MAX(CASE WHEN de.id = 'WX4O5IMxYAH' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as baseline_ability_pay_housing,
-        MAX(CASE WHEN de.id = 'WX4O5IMxYAH' AND e.program_stage = 'Xd5D2XCaPZH' THEN dv.value END) as post_intervention_ability_pay_housing,
+        -- Ability to Pay for Housing Needs (only exists in post-intervention)
+        MAX(CASE WHEN de.id = 'WX4O5IMxYAH' THEN dv.value END) as post_intervention_ability_pay_housing,
         
         -- Who Suffered Violence
         MAX(CASE WHEN de.id = 'kYr7NlM7cwM' AND e.program_stage = 'glKRXmp3I9k' THEN dv.value END) as who_suffered_violence_baseline,
